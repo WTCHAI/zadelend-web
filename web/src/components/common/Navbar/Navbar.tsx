@@ -14,14 +14,14 @@ import { Link as LinkIcon } from "lucide-react";
 
 export function Navbar() {
   return (
-    <header className="top-0 z-[100] w-full">
+    <header className="sticky top-0 z-[100] w-full">
       <div className="flex h-16 items-center justify-between px-6">
         <Link
           href="/"
           className="flex text-2xl font-extrabold items-center justify-center gap-2 tracking-tight text-link-primary/80 hover:text-link-primary/95 transition-colors duration-400"
         >
           <LinkIcon />
-          POMWHA
+          BRAT
         </Link>
 
         {/* Center Nav */}
@@ -29,15 +29,15 @@ export function Navbar() {
           <NavigationMenuList className="flex gap-4">
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
                 href="/deposit"
               >
-                Liquify
+                Deposit
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
                 href="/claim"
               >
                 Claim
@@ -45,7 +45,7 @@ export function Navbar() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
                 href="/how-it-works"
               >
                 How It Works
@@ -53,7 +53,7 @@ export function Navbar() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
                 href="/explorer"
               >
                 Explorer

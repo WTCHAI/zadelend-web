@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${interSans.variable} ${interMono.variable} backdrop-blur-sm bg-gradient-to-br from-link-backgroundlight to-blue-100`}
+        className={`${interSans.variable} ${interMono.variable} backdrop-blur-sm bg-gradient-to-br from-link-backgroundlight to-blue-50`}
       >
         <GlobalProviders initialState={initialState}>
           <Navbar />
