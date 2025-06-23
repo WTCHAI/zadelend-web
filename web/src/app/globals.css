@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: #F8FAFF;
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -41,6 +41,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Chainlink custom colors */
+  --color-link-primary: #0847F7;
+  --color-link-dark: #0B101C;
+  --color-link-lightblue: #8AA6F9;
+  --color-link-backgroundlight: #F8FAFF;
 }
 
 :root {
