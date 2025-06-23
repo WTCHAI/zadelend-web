@@ -1,50 +1,77 @@
 "use client";
 
 import Link from "next/link";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
-import { useConnect, useAccount } from "wagmi";
-import { shortenText } from "@/utils/shortenText";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Link as LinkIcon } from "lucide-react";
 
 export function Navbar() {
-  const { address, isConnected } = useAccount();
-
   return (
-    <nav className="flex items-center justify-between px-6 py-4 border-b bg-background">
-      <div className="flex items-center gap-6">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          BRAT
+    <header className="top-0 z-[100] w-full">
+      <div className="flex h-16 items-center justify-between px-6">
+        <Link
+          href="/"
+          className="flex text-2xl font-extrabold items-center justify-center gap-2 tracking-tight text-link-primary/80 hover:text-link-primary/95 transition-colors duration-400"
+        >
+          <LinkIcon />
+          POMWHA
         </Link>
 
+        {/* Center Nav */}
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="flex gap-4">
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="px-4 py-2 text-sm hover:underline"
-                href="/bridge"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400"
+                href="/deposit"
               >
-                Bridge
+                Liquify
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="px-4 py-2 text-sm hover:underline"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
                 href="/claim"
               >
                 Claim
               </NavigationMenuLink>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
+                href="/how-it-works"
+              >
+                How It Works
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-300"
+                href="/explorer"
+              >
+                Explorer
+              </NavigationMenuLink>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+
+        {/* Wallet */}
+        <div className="">
+          <ConnectButton
+            chainStatus="none"
+            showBalance={false}
+            accountStatus={"full"}
+            label="Connect"
+          />
+        </div>
       </div>
-      <ConnectButton showBalance />
-    </nav>
+    </header>
   );
 }

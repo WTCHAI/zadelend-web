@@ -1,122 +1,92 @@
 "use client";
 
-import { generateProof, Input, verifyProof } from "@/lib/circuit";
-import Image from "next/image";
-import { useEffect } from "react";
-
-
+import { Bitcoin, Shield, Zap, Droplets } from "lucide-react";
 
 export default function Home() {
-  useEffect(() => {
-    (async () => {
-      const input: Input = {
-        x: 3,
-        y: 4,
-      };
-
-      const { proof, publicSignals } = await generateProof(input);
-      const isValid = await verifyProof(proof, publicSignals);
-      console.log(isValid);
-    })();
-  }, []);
-
   return (
-    <div className="">
-      {/* <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="">
+      <section className="px-6 py-24 max-w-[80vw] mx-auto">
+        <h1 className="text-9xl font-bold text-gray-900 flex flex-col">
+          <span>Cross-Chain</span>
+          <span className="block text-blue-600">Asset Liquidity</span>
+        </h1>
+        <p className="mt-6 text-xl text-muted-foreground max-w-3xl">
+          Unlock liquidity from any asset across multiple chains. Transform the
+          value of your assets into cross-chain liquidity with untraceable
+          zk-proof technology.
+        </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="mt-12 px-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="rounded-2xl bg-blue-50 hover:bg-blue-100/80 p-6 shadow-lg ring-1 ring-blue-200/50 hover:ring-2 hover:ring-blue-400 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-600">
+                <Bitcoin className="size-6" />
+              </div>
+              <h3 className="text-xl text-blue-700 font-bold mb-2 mt-3">
+                Multi-Asset Support
+              </h3>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Tokens, NFTs, and RWAs — unified into cross-chain liquidity.
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-purple-50 hover:bg-purple-100/80 p-6 shadow-lg ring-1 ring-purple-200/50 hover:ring-2 hover:ring-purple-500 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1 text-xs font-semibold text-purple-600">
+                <Shield className="size-6" />
+              </div>
+              <h3 className="text-xl text-purple-700 font-bold mb-2 mt-3">
+                Privacy-First
+              </h3>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Zero-knowledge proofs keep your transfers untraceable and
+              self-sovereign.
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-teal-50 hover:bg-teal-100/80 p-6 shadow-lg ring-1 ring-teal-200/50 hover:ring-2 hover:ring-teal-500 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-semibold text-teal-600">
+                <Droplets className="size-6" />
+              </div>
+              <h3 className="text-xl text-teal-700 font-bold">
+                Seamless Liquidity
+              </h3>
+            </div>
+            <p className="text-sm text-gray-600 mt-2 mb-4">
+              Access liquidity across chains without complex bridges or wrapped
+              tokens.
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-yellow-50 hover:bg-yellow-100/80 p-6 shadow-lg ring-1 ring-yellow-200/50 hover:ring-2 hover:ring-yellow-400 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-600">
+                <Zap className="size-4" />
+              </div>
+              <h3 className="text-xl text-yellow-700 font-bold mb-2 mt-3">
+                Instant Settlement
+              </h3>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-4">
+              Fast, automated execution with minimal gas — no trusted
+              intermediaries.
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer> */}
-    </div>
+
+        <div className="mt-16">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+            Start Liquidating Assets
+          </button>
+          <button className="ml-4 border border-gray-300 px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            Learn More
+          </button>
+        </div>
+      </section>
+    </main>
   );
 }
