@@ -1,9 +1,28 @@
+"use client";
+
+import { generateProof, Input, verifyProof } from "@/lib/circuit";
 import Image from "next/image";
+import { useEffect } from "react";
+
+
 
 export default function Home() {
+  useEffect(() => {
+    (async () => {
+      const input: Input = {
+        x: 3,
+        y: 4,
+      };
+
+      const { proof, publicSignals } = await generateProof(input);
+      const isValid = await verifyProof(proof, publicSignals);
+      console.log(isValid);
+    })();
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="">
+      {/* <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -16,7 +35,7 @@ export default function Home() {
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
+              src/app/page.tsx
             </code>
             .
           </li>
@@ -97,7 +116,7 @@ export default function Home() {
           />
           Go to nextjs.org →
         </a>
-      </footer>
+      </footer> */}
     </div>
   );
 }
