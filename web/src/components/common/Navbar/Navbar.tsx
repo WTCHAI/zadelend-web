@@ -14,14 +14,14 @@ import { Link as LinkIcon } from "lucide-react";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-[100] w-full">
+    <nav className="sticky top-0 z-100 w-full backdrop-blur-md">
       <div className="flex h-16 items-center justify-between px-6">
         <Link
           href="/"
           className="flex text-2xl font-extrabold items-center justify-center gap-2 tracking-tight text-link-primary/80 hover:text-link-primary/95 transition-colors duration-400"
         >
           <LinkIcon />
-          BRAT
+          ZADELEND
         </Link>
 
         {/* Center Nav */}
@@ -29,7 +29,7 @@ export function Navbar() {
           <NavigationMenuList className="flex gap-4">
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent focus:bg-transparent focus:text-link-primary/90"
                 href="/deposit"
               >
                 Deposit
@@ -37,7 +37,7 @@ export function Navbar() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent focus:bg-transparent focus:text-link-primary/90"
                 href="/claim"
               >
                 Claim
@@ -53,7 +53,7 @@ export function Navbar() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
+                className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent focus:bg-transparent focus:text-link-primary/90"
                 href="/explorer"
               >
                 Explorer
@@ -72,6 +72,6 @@ export function Navbar() {
           />
         </div>
       </div>
-    </header>
+    </nav>
   );
 }

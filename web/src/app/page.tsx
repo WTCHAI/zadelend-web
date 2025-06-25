@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/common/Navbar/Navbar";
 import { Button } from "@/components/ui/button";
 import {
   Bitcoin,
@@ -185,14 +186,14 @@ export default function Home() {
   ];
 
   return (
-    <main className="flex flex-col justify-center items-center">
-      <section className="flex flex-col items-center justify-center h-screen text-center mx-auto px-6 bg-gradient-to-br from-link-backgroundlight to-blue-50`">
+    <main className="flex flex-col justify-center items-center overflow-auto bg-gradient-to-br from-link-backgroundlight to-blue-50">
+      <section className="flex flex-col items-center justify-center h-screen text-center mx-auto px-6 `">
         <h1 className="text-6xl md:text-9xl font-bold text-slate-700 flex flex-col">
           <span>Cross-Chain</span>
           <span className="block text-link-primary/90">Liquidity</span>
         </h1>
         <p className="mt-6 text-xl font-medium text-gray-400 max-w-3xl">
-          SEAMLESS DECENTRALIZED FINANCE
+          Cross-Chain Asset Collateralized Loan with ZK Withdrawal
         </p>
       </section>
 
@@ -214,16 +215,6 @@ export default function Home() {
           </Button>
           <Button variant="default">Learn More</Button>
         </div>
-      </div>
-
-      {/* Steps Section */}
-      <h2 className="block font-bold mt-24 text-3xl md:text-5xl text-gray-900/80 text-center">
-        How It Works
-      </h2>
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start justify-center">
-        {steps.map((step, index) => (
-          <StepCard key={index} stepNumber={index + 1} {...step} />
-        ))}
       </div>
     </main>
   );
