@@ -1,3 +1,4 @@
+import { Footer } from "@/components/common/Footer/footer";
 import { Navbar } from "@/components/common/Navbar/Navbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,30 +104,6 @@ function FeatureCard({
   );
 }
 
-function StepCard({
-  icon,
-  stepNumber,
-  title,
-  description,
-  colorScheme,
-}: StepCardProps) {
-  const colors = colorSchemes[colorScheme];
-
-  return (
-    <div className="text-center">
-      <div
-        className={`w-20 h-20 ${colors.bg} rounded-full flex items-center justify-center mx-auto mb-6`}
-      >
-        <div className={`w-10 h-10 ${colors.iconText}`}>{icon}</div>
-      </div>
-      <h3 className="text-2xl font-bold text-gray-900 mb-4">
-        {stepNumber}. {title}
-      </h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
-    </div>
-  );
-}
-
 // Main Component
 export default function Home() {
   // Configuration data
@@ -161,30 +138,6 @@ export default function Home() {
     },
   ];
 
-  const steps = [
-    {
-      icon: <Lock className="w-10 h-10" />,
-      title: "Deposit Assets",
-      description:
-        "Connect your wallet and deposit any supported asset—tokens, NFTs, or real-world assets. Your assets are secured in our smart contract while maintaining full ownership rights.",
-      colorScheme: "blue" as const,
-    },
-    {
-      icon: <Layers className="w-10 h-10" />,
-      title: "Generate ZK-Proof",
-      description:
-        "Our advanced zero-knowledge proof system generates cryptographic evidence of your asset ownership without revealing sensitive information, ensuring complete privacy.",
-      colorScheme: "purple" as const,
-    },
-    {
-      icon: <Repeat className="w-10 h-10" />,
-      title: "Access Liquidity",
-      description:
-        "Instantly access liquidity on any supported chain. Trade, lend, or use your assets across ecosystems without complex bridges or wrapped tokens.",
-      colorScheme: "teal" as const,
-    },
-  ];
-
   return (
     <main className="flex flex-col justify-center items-center overflow-auto bg-gradient-to-br from-link-backgroundlight to-blue-50">
       <section className="flex flex-col items-center justify-center h-screen text-center mx-auto px-6 `">
@@ -216,6 +169,7 @@ export default function Home() {
           <Button variant="default">Learn More</Button>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import { walletConfig } from "../config/wallet";
 import { GlobalProviders } from "../providers/GlobalProvider";
 import { Navbar } from "@/components/common/Navbar/Navbar";
+import { Footer } from "@/components/common/Footer/footer";
+import { Toaster } from "sonner";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -35,11 +37,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-      className={`${interSans.variable} ${interMono.variable} min-h-screen from-link-backgroundlight via-link-lightblue/60 to-link-primary/70`}
+        className={`${interSans.variable} ${interMono.variable} min-h-screen from-link-backgroundlight via-link-lightblue/60 to-link-primary/70`}
       >
         <GlobalProviders initialState={initialState}>
           <Navbar />
           {children}
+          <Toaster />
         </GlobalProviders>
       </body>
     </html>

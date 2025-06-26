@@ -10,12 +10,12 @@ import {
   SCROLL_ICON,
   USDT_ICON,
 } from "@/components/common/Tokens/Icons";
+import { MintContentInfo } from "../deposit/mint";
+import { DepositContentInfo } from "../deposit/deposit";
 
-import { MintContentInfo } from "./mint";
-import { DepositContentInfo } from "./deposit";
 
-export default function DepositWithTabs() {
-  const [activeTab, setActiveTab] = useState("mint");
+export default function ClaimWithProofTabs() {
+  const [activeTab, setActiveTab] = useState("proof");
   const { isConnected } = useAccount();
 
   return (
@@ -30,29 +30,29 @@ export default function DepositWithTabs() {
             {/* Tab Headers */}
             <TabsList className="grid grid-cols-2 mb-8 bg-transparent p-0 gap-4">
               <TabsTrigger
-                value="mint"
+                value="proof"
                 className={`py-4 px-6 rounded-2xl font-semibold text-lg transition-all backdrop-blur-3xl hover:bg-white/30 duration-300 hover:ring1 hover:ring-bg-white/50 hover:shadow-md ${
                   activeTab === "mint-deposit"
                     ? "bg-white/60 text-grayy-800 shadow-lg"
                     : "text-gray-500 hover:text-grayy-700 bg-transparent"
                 }`}
               >
-                Mint
+                Proof
               </TabsTrigger>
               <TabsTrigger
-                value="deposit"
+                value="claim"
                 className={`py-4 px-6 rounded-2xl font-semibold text-lg transition-all backdrop-blur-3xl hover:bg-white/30 duration-300 hover:ring1 hover:ring-bg-white/50 hover:shadow-md ${
                   activeTab === "deposit"
                     ? "bg-white/60  text-grayy-800 shadow-lg"
                     : "text-gray-500 hover:text-grayy-700 transparent"
                 }`}
               >
-                Deposit
+                Claim
               </TabsTrigger>
             </TabsList>
 
             <DepositContentInfo
-              value="deposit"
+              value="proof"
               from={{ name: "Eth Sepolia", icon: ETH_ICON }}
               to={{ name: "Scroll Sepolia", icon: SCROLL_ICON }}
               tokenIcon={USDT_ICON}
@@ -61,7 +61,7 @@ export default function DepositWithTabs() {
               buttonLabel="Deposit"
             />
             <MintContentInfo
-              value="mint"
+              value="claim"
               from={{ name: "Eth Sepolia", icon: ETH_ICON }}
               to={{ name: "Scroll Sepolia", icon: SCROLL_ICON }}
               tokenIcon={USDT_ICON}

@@ -46,7 +46,7 @@ export function Navbar() {
             <NavigationMenuItem>
               <NavigationMenuLink
                 className="text-base font-medium text-link-dark transition-colors hover:text-link-primary/90 duration-400 bg-transparent hover:bg-transparent"
-                href="/how-it-works"
+                href="/workflow"
               >
                 How It Works
               </NavigationMenuLink>
