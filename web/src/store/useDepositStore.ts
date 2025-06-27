@@ -3,7 +3,7 @@ import { create } from "zustand";
 interface DepositStore {
   tokenId: string;
   ContractFactoryAddress: string;
-  nftValues: Record<string, any>;
+  nftValues: string
 
   nonce: string;
   nullifier: string;
@@ -20,7 +20,7 @@ interface DepositStore {
 export const useDepositStore = create<DepositStore>((set) => ({
   tokenId: "",
   ContractFactoryAddress: "0x4B9D25236B30F01edF4D539ae8BDB04CcE029c75",
-  nftValues: {},
+  nftValues: "100",
   nonce: "",
   nullifier: "",
 
@@ -35,7 +35,7 @@ export const useDepositStore = create<DepositStore>((set) => ({
     set({
       tokenId: "",
       ContractFactoryAddress: "",
-      nftValues: {},
+      nftValues: "100",
 
       nonce: "",
       nullifier: "",

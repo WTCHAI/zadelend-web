@@ -6,13 +6,21 @@ import { ArrowRight, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDepositStore } from "@/store/useDepositStore";
-import { AssetCard, NetworkCard } from "@/components/common/Cards/cards";
+import {
+  AssetCard,
+  AssetNFTCard,
+  NetworkCard,
+} from "@/components/common/Cards/cards";
+import { useGenerateProofMutation } from "@/hooks/useGenProof";
+import { ProofInput, useProofStore } from "@/store/useProofStore";
+import { toast } from "sonner";
 
 type ProofContentInfoProp = {
   value: string;
   from: { name: string; icon: string };
   to: { name: string; icon: string };
   tokenIcon: string;
+  overlayIcon: string;
   networkIcon: string;
   isConnected: boolean;
   buttonLabel: string;
@@ -23,66 +31,83 @@ export const ProofContentInfo = ({
   from,
   to,
   tokenIcon,
+  overlayIcon,
   networkIcon,
   isConnected,
   buttonLabel,
 }: ProofContentInfoProp) => {
-  const { tokenId } = useDepositStore();
-
-  
+  const proofGeneration = useGenerateProofMutation();
+  const { input } = useProofStore();
+  const quoted =
+    Array.isArray(input?.pathElements) &&
+    input.pathElements.length > 0 &&
+    Array.isArray(input?.pathIndices) &&
+    input.pathIndices.length > 0 &&
+    input?.root !== "";
   return (
     <TabsContent
       value={value}
       className="space-y-6 transition-all duration-700"
     >
-      <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-5 hover:shadow-xl ">
-        <div className="flex w-full items-center justify-between mb-2">
-          <div>
-            <Label className="text-gray-600 font-medium mb-3 block">From</Label>
-            <NetworkCard name={from.name} icon={from.icon} isSelected={false} />
-          </div>
-
-          <div className="flex h-full items-end justify-end">
-            <ArrowRight className="w-6 h-6 text-gray-400 translate-y-[1.5vh]" />
-          </div>
-
-          <div>
-            <Label className="text-gray-600 font-medium mb-3 block">To</Label>
-            <NetworkCard name={to.name} icon={to.icon} isSelected={false} />
+      <div className="flex flex-col bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-5 hover:shadow-xl gap-4">
+        <div className="flex">
+          <div className="text-sm font-semibold text-grayy-700 bg-white/80 rounded-xl p-4 text-center w-full">
+            Proving you are the owner of the Asset
           </div>
         </div>
 
-        <AssetCard
+        <AssetNFTCard
           title="Assets"
           token="NFTs ZADELEND"
           tokenIcon={tokenIcon}
+          overlayIcon={overlayIcon}
           networkIcon={networkIcon}
         />
 
         <Button
           className={cn(
-            "w-full mt-8 py-6 text-lg font-semibold rounded-2xl shadow-lg",
-            isConnected
-              ? "bg-link-primary/85"
-              : "bg-link-primary/40 text-black cursor-not-allowed opacity-85"
+            "w-full py-6 text-lg font-semibold rounded-2xl shadow-lg cursor-pointer",
+            "bg-link-primary/85 hover:bg-link-primary/95 transition-all duration-300"
           )}
-          disabled={!isConnected}
-          onClick={() => {
-            if (!isConnected) return;
-            if (value === "deposit") {
-              console.log("execute deposit logic here");
-            } else if (value === "withdraw") {
-              console.log("execute withdraw logic here");
+          disabled={
+            input?.nonce[0] === "" ||
+            input?.nullifier === "" ||
+            input?.loanAmount === ""
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            if (!quoted) {
+              // getLeaf information execution
+
+              return;
             }
+            const inputArgs: ProofInput = {
+              nullifier: input?.nullifier.toString() ?? "",
+              nonce: [input?.nonce.toString() ?? ""],
+              loanAmount: "100", //fixed size amount
+              pathElements: ["we"],
+              pathIndices: ["d"],
+              root: "df",
+              pathRoot: "df",
+            };
+            proofGeneration.mutate(inputArgs, {
+              onSuccess: (data) => {
+                console.log("Storing Proof successfully");
+              },
+              onError: (error) => {
+                console.error("Error generating proof:");
+              },
+            });
           }}
         >
-          <Wallet className="w-5 h-5 mr-2" />
-          {isConnected ? (
-            <span>
-              {buttonLabel} {tokenId}
-            </span>
+          {input?.nonce[0] === "" ||
+          input?.nullifier === "" ||
+          input?.loanAmount === "" ? (
+            <div>Generating Proof</div>
+          ) : quoted ? (
+            <div>Generating Proof</div>
           ) : (
-            <span>Connect Wallet First</span>
+            <div>Quoting proof setup</div>
           )}
         </Button>
       </div>

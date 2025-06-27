@@ -1,6 +1,6 @@
 "use client";
 
-import {useState } from "react";
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useAccount } from "wagmi";
@@ -13,6 +13,8 @@ import {
 import { MintContentInfo } from "../deposit/mint";
 import { DepositContentInfo } from "../deposit/deposit";
 
+import { ProofContentInfo } from "./proof";
+import { ClaimContentInfo } from "./claim";
 
 export default function ClaimWithProofTabs() {
   const [activeTab, setActiveTab] = useState("proof");
@@ -51,21 +53,23 @@ export default function ClaimWithProofTabs() {
               </TabsTrigger>
             </TabsList>
 
-            <DepositContentInfo
+            <ProofContentInfo
               value="proof"
               from={{ name: "Eth Sepolia", icon: ETH_ICON }}
               to={{ name: "Scroll Sepolia", icon: SCROLL_ICON }}
               tokenIcon={USDT_ICON}
+              overlayIcon={ETH_ICON}
               networkIcon={ETH_ICON}
               isConnected={isConnected}
               buttonLabel="Deposit"
             />
-            <MintContentInfo
+            <ClaimContentInfo
               value="claim"
               from={{ name: "Eth Sepolia", icon: ETH_ICON }}
               to={{ name: "Scroll Sepolia", icon: SCROLL_ICON }}
               tokenIcon={USDT_ICON}
               networkIcon={ETH_ICON}
+              overlayIcon={ETH_ICON}
               isConnected={isConnected}
               buttonLabel="Deposit"
             />

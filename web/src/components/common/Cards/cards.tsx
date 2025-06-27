@@ -2,6 +2,8 @@ import { TokenIcon, TokenPairIcon } from "@/components/common/Tokens/Icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDepositStore } from "@/store/useDepositStore";
+import { ProofInput, useProofStore } from "@/store/useProofStore";
+import { useEffect } from "react";
 
 export const NetworkCard = ({
   name,
@@ -146,6 +148,95 @@ export const AssetCard = ({
             onChange={(e) => setNullifier(e.target.value)}
             placeholder="Unique nullifier"
             className="w-full bg-white/80 border border-gray-300 rounded-lg p-3 text-base"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const AssetNFTCard = ({
+  title,
+  token,
+  tokenIcon,
+  overlayIcon,
+  networkIcon,
+}: {
+  title: string;
+  token: string;
+  tokenIcon: string;
+  overlayIcon: string;
+  networkIcon: string;
+}) => {
+  const { nonce, nullifier } = useDepositStore();
+  const { input, setInput } = useProofStore();
+  useEffect(() => {
+    setInput({
+      ...input,
+      nonce: nonce ? [nonce] : [],
+      nullifier: nullifier || "",
+      loanAmount: "100",
+    } as ProofInput);
+  }, []);
+  return (
+    <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-6 space-y-6">
+      {/* Header Section */}
+      <div className="grid grid-cols-2 gap-4 h-[60px]">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex items-center gap-2">
+            <NetworkCard
+              name={"Sepolia ETH"}
+              icon={networkIcon}
+              isSelected={false}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 justify-center items-start w-full">
+          <Label className="text-gray-500 text-sm font-medium">
+            Assets Value
+          </Label>
+          <Input
+            type="text"
+            value="100"
+            disabled
+            className="text-left font-medium text-lg bg-white/80 rounded-lg px-4 py-2 border border-gray-300 w-full shadow-sm "
+          />
+        </div>
+      </div>
+
+      {/* Input Fields */}
+      <div className="grid grid-cols-2 gap-4 h-[60px]">
+        <div className="h-full">
+          <Label className="text-gray-600 font-medium block mb-1">Nonce</Label>
+          <Input
+            type="number"
+            value={input?.nonce ?? 0}
+            onChange={(e) => {
+              setInput({
+                ...input,
+                nonce: [e.target.value.toString()],
+              } as ProofInput);
+            }}
+            placeholder="Random nonce"
+            className="w-full bg-white/80 border border-gray-300 rounded-lg p-3 text-base shadow-inner"
+          />
+        </div>
+        <div className="h-full">
+          <Label className="text-gray-600 font-medium block mb-1">
+            Nullifier
+          </Label>
+          <Input
+            type="number"
+            value={input?.nullifier ?? 0}
+            onChange={(e) => {
+              setInput({
+                ...input,
+                nullifier: e.target.value.toString(),
+              } as ProofInput);
+            }}
+            placeholder="Unique nullifier"
+            className="w-full bg-white/80 border border-gray-300 rounded-lg p-3 text-base shadow-inner"
           />
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function DepositWithTabs() {
               <TabsTrigger
                 value="mint"
                 className={`py-4 px-6 rounded-2xl font-semibold text-lg transition-all backdrop-blur-3xl hover:bg-white/30 duration-300 hover:ring1 hover:ring-bg-white/50 hover:shadow-md ${
-                  activeTab === "mint-deposit"
+                  activeTab === "mint"
                     ? "bg-white/60 text-grayy-800 shadow-lg"
                     : "text-gray-500 hover:text-grayy-700 bg-transparent"
                 }`}

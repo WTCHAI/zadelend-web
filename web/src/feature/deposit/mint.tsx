@@ -59,6 +59,7 @@ export const MintContentInfo = ({
           disabled={!isConnected}
           onClick={() => {
             if (!isConnected) return;
+            //// 
             console.log("Execute mint logic here");
           }}
         >

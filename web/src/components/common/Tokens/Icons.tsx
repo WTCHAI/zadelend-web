@@ -21,7 +21,7 @@ export const TokenIcon = ({
 export const TokenPairIcon = ({
   baseIcon,
   overlayIcon,
-  size = 40,
+  size = 30,
 }: {
   baseIcon: string;
   overlayIcon: string;
@@ -30,7 +30,7 @@ export const TokenPairIcon = ({
   const overlaySize = size * 0.6;
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div className="relative rounded-full h-[30px] w-[35px]">
       <img
         src={baseIcon}
         alt="Base Token"
