@@ -1,30 +1,23 @@
+import { GetLatestTokenId } from "@/feature/deposit/mintNFT";
 import { create } from "zustand";
 
 interface MintMockNFTState {
-  ownedNFTs: string[];
+  latestTokenId: number;
   loading: boolean;
-  getUserNFTs: (userAddress: string) => Promise<void>;
+  getLatestTokenID: () => Promise<void>;
   onMintNFT: () => Promise<void>;
 }
 
 export const useMintMockNFT = create<MintMockNFTState>((set, get) => ({
-  ownedNFTs: ["123", "124", "128"],
+  latestTokenId: 0,
   loading: false,
 
-  getUserNFTs: async (userAddress: string) => {
+  getLatestTokenID: async () => {
     try {
       console.log("getting nft");
-      //   const { ContractFactoryAddress } = useDepositStore.getState();
-      //   set({ loading: true });
-
-      //   const tokenIds = await useReadContract({
-      //     address: ContractFactoryAddress as `0x${string}`,
-      //     abi: ContractAbi,
-      //     functionName: "getOwnedNFTs",
-      //     args: [userAddress],
-      //   });
-
-      //   set({ ownedNFTs: tokenIds as number[] });
+      const latestTokenID = await GetLatestTokenId();
+      set({ loading: true });
+      set({ latestTokenId: latestTokenID });
     } catch (error) {
       console.error("Error fetching NFTs:", error);
     } finally {

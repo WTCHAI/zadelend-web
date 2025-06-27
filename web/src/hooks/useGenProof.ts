@@ -1,6 +1,6 @@
 import { LOAN_WITHDRAWER_ABI } from "@/lib/abis";
 import { exportSolidityCallData } from "@/lib/circuit";
-import { publicClient, ScrollContract } from "@/lib/contract";
+
 import { useProofStore } from "@/store/useProofStore";
 import { bytes32ToBigInt } from "@/utils/byte32";
 import { useMutation } from "@tanstack/react-query";

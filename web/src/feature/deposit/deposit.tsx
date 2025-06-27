@@ -7,6 +7,18 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDepositStore } from "@/store/useDepositStore";
 import { AssetCard, NetworkCard } from "@/components/common/Cards/cards";
+import { DepositNFT } from "./depositNFT";
+import { useMintMockNFT } from "@/store/useMintMockStore";
+import { Account, Address, Hex } from "viem";
+import { useAccount } from "wagmi";
+
+import { poseidon3 } from "poseidon-lite";
+import { toBytes32 } from "@/utils/byte32";
+import {
+  contractConfig,
+  ScrollContract,
+  SepoliaContract,
+} from "@/lib/contract";
 
 type BridgeTabProps = {
   value: string;
@@ -27,7 +39,9 @@ export const DepositContentInfo = ({
   isConnected,
   buttonLabel,
 }: BridgeTabProps) => {
-  const { tokenId } = useDepositStore();
+  const { tokenId, nonce, nullifier } = useDepositStore();
+  const { address } = useAccount();
+
   return (
     <TabsContent
       value={value}
@@ -65,20 +79,28 @@ export const DepositContentInfo = ({
               : "bg-link-primary/40 text-black cursor-not-allowed opacity-85"
           )}
           disabled={!isConnected}
-          onClick={() => {
-            if (!isConnected) return;
+          onClick={async () => {
+            if (!isConnected && !address) return;
             if (value === "deposit") {
-              console.log("execute deposit logic here");
+              console.log(nonce, nullifier, "100");
+              const commitment = poseidon3([nonce, nullifier, "100"]);
+              const byteCommitment = toBytes32(commitment);
+
+              await DepositNFT({
+                account: address as Address,
+                tokenId: BigInt(tokenId),
+                amount: 100n,
+                commitment: byteCommitment as Hex,
+                nftAddress: SepoliaContract.nft as Address,
+                receiverAddress: ScrollContract.Loaner as Address,
+              });
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }
           }}
         >
-          <Wallet className="w-5 h-5 mr-2" />
           {isConnected ? (
-            <span>
-              {buttonLabel} {tokenId}
-            </span>
+            <span>Deposit your NFT</span>
           ) : (
             <span>Connect Wallet First</span>
           )}

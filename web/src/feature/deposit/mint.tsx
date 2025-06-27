@@ -9,9 +9,13 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useCopyToClipboard } from "@/hooks/useCopy";
 import { useDepositStore } from "@/store/useDepositStore";
-import { fromRlp } from "viem";
+import { Address, fromRlp } from "viem";
 import { useMintMockNFT } from "@/store/useMintMockStore";
 import { NetworkCard } from "@/components/common/Cards/cards";
+
+import { useAccount } from "wagmi";
+import { MintNFT } from "./mintNFT";
+import { SepoliaContract } from "@/lib/contract";
 
 type MintContentInfoProps = {
   value: string;
@@ -32,12 +36,11 @@ export const MintContentInfo = ({
   isConnected,
   buttonLabel,
 }: MintContentInfoProps) => {
-  const { tokenId, ContractFactoryAddress } = useDepositStore();
-  const { ownedNFTs } = useMintMockNFT();
-  const { handleCopy: tokenIdCopy } = useCopyToClipboard(tokenId);
-  const { handleCopy: FactoryCopy } = useCopyToClipboard(
-    ContractFactoryAddress
-  );
+  const { tokenId } = useDepositStore();
+  const { latestTokenId, getLatestTokenID } = useMintMockNFT();
+  
+  const { handleCopy: FactoryCopy } = useCopyToClipboard(SepoliaContract.nft);
+  const { address } = useAccount();
   return (
     <TabsContent value="mint" className="space-y-6 transition-all duration-700">
       <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-5 hover:shadow-xl">
@@ -57,10 +60,30 @@ export const MintContentInfo = ({
               : "bg-link-primary/40 text-black cursor-not-allowed opacity-85"
           )}
           disabled={!isConnected}
-          onClick={() => {
-            if (!isConnected) return;
-            //// 
-            console.log("Execute mint logic here");
+          onClick={async () => {
+            if (!isConnected || !address) return;
+            try {
+              const { hash } = await MintNFT(address as Address);
+
+              toast.success(
+                <div>
+                  Transaction sent:&nbsp;
+                  <a
+                    href={`https://sepolia.etherscan.io/tx/${hash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-medium"
+                  >
+                    View on Etherscan
+                  </a>
+                </div>
+              );
+              const latest = await getLatestTokenID();
+              
+            } catch (err) {
+              toast.error("Mint failed");
+              console.error(err);
+            }
           }}
         >
           <Wallet className="w-5 h-5 mr-2" />
@@ -81,7 +104,7 @@ export const MintContentInfo = ({
               toast.success("Factory address copied");
             }}
           >
-            {ContractFactoryAddress}
+            {SepoliaContract.nft}
           </span>
         </div>
 
@@ -90,23 +113,11 @@ export const MintContentInfo = ({
           <h4 className="text-gray-700 font-semibold text-sm">
             Minted Token IDs
           </h4>
-          {ownedNFTs.map((id) => (
-            <div
-              key={id}
-              className="flex justify-between items-center text-sm font-mono bg-white/70 px-3 py-2 rounded-lg border border-gray-200"
-            >
-              <span>#{id}</span>
-              <button
-                onClick={() => {
-                  tokenIdCopy(id); // ✅ Pass dynamic value to hook
-                  toast.success(`Copied token ID: ${id}`);
-                }}
-                className="text-blue-500 hover:text-blue-700 transition"
-              >
-                <Copy size={16} />
-              </button>
+          {latestTokenId !== 0 ? (
+            <div className="flex justify-between items-center text-sm font-mono bg-white/70 px-3 py-2 rounded-lg border border-gray-200">
+              {latestTokenId}
             </div>
-          ))}
+          ) : undefined}
         </div>
       </div>
     </TabsContent>

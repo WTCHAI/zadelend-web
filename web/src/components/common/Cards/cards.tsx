@@ -1,7 +1,9 @@
 import { TokenIcon, TokenPairIcon } from "@/components/common/Tokens/Icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SepoliaContract } from "@/lib/contract";
 import { useDepositStore } from "@/store/useDepositStore";
+import { useMintMockNFT } from "@/store/useMintMockStore";
 import { ProofInput, useProofStore } from "@/store/useProofStore";
 import { useEffect } from "react";
 
@@ -83,17 +85,9 @@ export const AssetCard = ({
   networkIcon: string;
   placeholder?: string;
 }) => {
-  const {
-    tokenId,
-    ContractFactoryAddress,
-    nonce,
-    nullifier,
-    setTokenId,
-    setContractFactoryAddress,
-    setNonce,
-    setNullifier,
-  } = useDepositStore();
-
+  const { tokenId, nonce, nullifier, setTokenId, setNonce, setNullifier } =
+    useDepositStore();
+  const { latestTokenId } = useMintMockNFT();
   return (
     <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-6 space-y-6">
       <div>
@@ -105,7 +99,9 @@ export const AssetCard = ({
             <Input
               type="text"
               value={tokenId}
-              onChange={(e) => setTokenId(e.target.value)}
+              onChange={(e) => {
+                setTokenId(e.target.value);
+              }}
               placeholder={"place tokenId here"}
               className="text-base p-2 font-medium text-gray-800 border-none bg-white/80 rounded-lg shadow-sm w-full ring-none"
             />
@@ -119,9 +115,8 @@ export const AssetCard = ({
         </Label>
         <Input
           type="text"
-          value={ContractFactoryAddress}
+          value={SepoliaContract.nft}
           disabled={true}
-          onChange={(e) => setContractFactoryAddress(e.target.value)}
           placeholder="0xFactoryAddress..."
           className="w-full bg-white/80 border border-gray-300 rounded-lg p-3 text-base focus:ring-2 focus:ring-blue-500"
         />
@@ -215,7 +210,10 @@ export const AssetNFTCard = ({
             onChange={(e) => {
               setInput({
                 ...input,
-                nonce: [e.target.value.toString()],
+                nonce: [
+                  e.target.value.toString(),
+                  (e.target.value + 1).toString(),
+                ],
               } as ProofInput);
             }}
             placeholder="Random nonce"
