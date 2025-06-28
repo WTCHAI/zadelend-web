@@ -1,19 +1,12 @@
-import {
-  writeContract,
-  waitForTransactionReceipt,
-  getAccount,
-} from "@wagmi/core";
+import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import {
   contractConfig,
   SepoliaContract,
-  ContractConfigs,
   ScrollContract,
-  connector,
 } from "@/lib/contract";
-import { Account, Address, Hex } from "viem";
+import { Address, Hex } from "viem";
 import { toast } from "sonner";
 import { NFT_ABI, NFT_DEPOSITOR_ABI } from "@/lib/abis";
-import { useAccount } from "wagmi";
 
 /**
  * Approves USDC and deposits an NFT.
@@ -37,7 +30,6 @@ export const DepositNFT = async ({
   try {
     // 1️⃣ Approve NFT
     toast.info("Approving nft...");
-    console.log("Approving NFT for tokenId:", tokenId, "by account:", account);
 
     const approveTx = await writeContract(contractConfig, {
       address: SepoliaContract.nft,
@@ -60,9 +52,8 @@ export const DepositNFT = async ({
       functionName: "depositNft",
       args: [SepoliaContract.nft, tokenId, ScrollContract.Loaner, commitment],
       account,
-      // gas: 500_000n,
+      gas: 500_000n,
     });
-    console.log(depositTx);
 
     const receipt = await waitForTransactionReceipt(contractConfig, {
       hash: depositTx,

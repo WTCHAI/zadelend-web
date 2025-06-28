@@ -11,9 +11,12 @@ import {
   AssetNFTCard,
   NetworkCard,
 } from "@/components/common/Cards/cards";
-import { useGenerateProofMutation } from "@/hooks/useGenProof";
+import { GenerateProof, ProofInputParam } from "@/hooks/useGenProof";
 import { ProofInput, useProofStore } from "@/store/useProofStore";
 import { toast } from "sonner";
+import { getLeafs } from "./getLeafs";
+import { useAccount } from "wagmi";
+import { poseidon3 } from "poseidon-lite";
 
 type ProofContentInfoProp = {
   value: string;
@@ -36,8 +39,8 @@ export const ProofContentInfo = ({
   isConnected,
   buttonLabel,
 }: ProofContentInfoProp) => {
-  const proofGeneration = useGenerateProofMutation();
-  const { input } = useProofStore();
+  const { input, setInput } = useProofStore();
+  const { address } = useAccount();
   const quoted =
     Array.isArray(input?.pathElements) &&
     input.pathElements.length > 0 &&
@@ -74,30 +77,57 @@ export const ProofContentInfo = ({
             input?.nullifier === "" ||
             input?.loanAmount === ""
           }
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            if (!quoted) {
-              // getLeaf information execution
-
+            if (!quoted && address) {
+              // GettingLeave function
+              if (!input?.nullifier || !input?.nonce) {
+                toast.error("Please provide nullifier and nonce first.");
+                return;
+              }
+              console.log("Fetching leafs for nullifier:", input.nullifier);
+              console.log("Nonce:", input.nonce);
+              console.log("Loan Amount:", input.loanAmount);
+              // Fetching leafs
+              const { pathElements, pathIndices, root } = await getLeafs(
+                input.nullifier,
+                input.nonce,
+                input.loanAmount
+              );
+              // update proof input params state
+              setInput({
+                ...input,
+                pathElements: pathElements,
+                pathIndices: pathIndices,
+                root: root,
+              } as ProofInput);
               return;
             }
-            const inputArgs: ProofInput = {
-              nullifier: input?.nullifier.toString() ?? "",
-              nonce: [input?.nonce.toString() ?? ""],
-              loanAmount: "100", //fixed size amount
-              pathElements: ["we"],
-              pathIndices: ["d"],
-              root: "df",
-              pathRoot: "df",
+            // console.log("Generating Proof with input:", input);
+            // const inputArgs: ProofInputParam = {
+            //   root: input?.root ?? "",
+            //   nullifier: input?.nullifier.toString() ?? "",
+            //   secret: [input?.nullifier ?? "", input?.nonce.toString() ?? ""],
+            //   loanAmount: "100", //fixed size amount
+            //   pathElements:
+            //     input?.pathElements.map((el) => el.toString()) ?? [],
+            //   pathIndices: input?.pathIndices.map((el) => el.toString()) ?? [],
+            // };
+            const i_commitment = poseidon3([12, 11, 100]);
+            console.log("Current commitment:", i_commitment.toString());
+            const inputArgs: ProofInputParam = {
+              root: "3568792632707908471653242077392028502802971188580429106389237628370425210300",
+              nullifier: "12",
+              secret: ["12", "11"],
+              loanAmount: "100",
+              pathElements: [
+                "19014214495641488759237505126948346942972912379615652741039992445865937985820",
+                "6735486976153207481917817300106879816087474366714266275682876014984271171285",
+              ],
+              pathIndices: ["0", "1"],
             };
-            proofGeneration.mutate(inputArgs, {
-              onSuccess: (data) => {
-                console.log("Storing Proof successfully");
-              },
-              onError: (error) => {
-                console.error("Error generating proof:");
-              },
-            });
+            console.log(inputArgs, "inputArgs for proof generation");
+            await GenerateProof(inputArgs);
           }}
         >
           {input?.nonce[0] === "" ||

@@ -5,7 +5,7 @@ import {
   USDC_ABI,
 } from "./abis";
 import { http, createConfig, getAccount } from "@wagmi/core";
-import { sepolia, scroll } from "@wagmi/core/chains";
+import { sepolia, scrollSepolia } from "@wagmi/core/chains";
 import { Address } from "viem";
 
 export const SepoliaContract = {
@@ -20,9 +20,9 @@ export const ScrollContract = {
 };
 
 export const contractConfig = createConfig({
-  chains: [scroll, sepolia],
+  chains: [scrollSepolia, sepolia],
   transports: {
-    [scroll.id]: http(),
+    [scrollSepolia.id]: http(),
     [sepolia.id]: http(),
   },
 });
@@ -67,3 +67,8 @@ export const ContractConfigs = {
     args: [nullifier, root, a, b, c, pubSignals],
   }),
 };
+
+
+import { getPublicClient } from "wagmi/actions";
+
+export const publicClient = getPublicClient(contractConfig)

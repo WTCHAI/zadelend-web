@@ -8,17 +8,13 @@ import { cn } from "@/lib/utils";
 import { useDepositStore } from "@/store/useDepositStore";
 import { AssetCard, NetworkCard } from "@/components/common/Cards/cards";
 import { DepositNFT } from "./depositNFT";
-import { useMintMockNFT } from "@/store/useMintMockStore";
 import { Account, Address, Hex } from "viem";
+
 import { useAccount } from "wagmi";
 
 import { poseidon3 } from "poseidon-lite";
 import { toBytes32 } from "@/utils/byte32";
-import {
-  contractConfig,
-  ScrollContract,
-  SepoliaContract,
-} from "@/lib/contract";
+import { ScrollContract, SepoliaContract } from "@/lib/contract";
 
 type BridgeTabProps = {
   value: string;
@@ -30,7 +26,7 @@ type BridgeTabProps = {
   buttonLabel: string;
 };
 
-export const DepositContentInfo = ({
+export const DepositContentInfo: React.FC<BridgeTabProps> = ({
   value,
   from,
   to,
@@ -82,18 +78,22 @@ export const DepositContentInfo = ({
           onClick={async () => {
             if (!isConnected && !address) return;
             if (value === "deposit") {
-              console.log(nonce, nullifier, "100");
-              const commitment = poseidon3([nonce, nullifier, "100"]);
+              const commitment = poseidon3([
+                Number(nullifier),
+                Number(nonce),
+                100,
+              ]);
+              console.log("Current commitment:", commitment);
               const byteCommitment = toBytes32(commitment);
 
-              await DepositNFT({
-                account: address as Address,
-                tokenId: BigInt(tokenId),
-                amount: 100n,
-                commitment: byteCommitment as Hex,
-                nftAddress: SepoliaContract.nft as Address,
-                receiverAddress: ScrollContract.Loaner as Address,
-              });
+              // await DepositNFT({
+              //   account: address as Address,
+              //   tokenId: BigInt(tokenId),
+              //   amount: 100n,
+              //   commitment: byteCommitment as Hex,
+              //   nftAddress: SepoliaContract.nft as Address,
+              //   receiverAddress: ScrollContract.Loaner as Address,
+              // });
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }

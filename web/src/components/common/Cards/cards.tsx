@@ -168,7 +168,7 @@ export const AssetNFTCard = ({
   useEffect(() => {
     setInput({
       ...input,
-      nonce: nonce ? [nonce] : [],
+      nonce: nonce,
       nullifier: nullifier || "",
       loanAmount: "100",
     } as ProofInput);
@@ -210,10 +210,7 @@ export const AssetNFTCard = ({
             onChange={(e) => {
               setInput({
                 ...input,
-                nonce: [
-                  e.target.value.toString(),
-                  (e.target.value + 1).toString(),
-                ],
+                nonce: e.target.value.toString(),
               } as ProofInput);
             }}
             placeholder="Random nonce"

@@ -1,73 +1,70 @@
 import { LOAN_WITHDRAWER_ABI } from "@/lib/abis";
-import { exportSolidityCallData } from "@/lib/circuit";
+import { exportSolidityCallData, verifyProof } from "@/lib/circuit";
 
-import { useProofStore } from "@/store/useProofStore";
-import { bytes32ToBigInt } from "@/utils/byte32";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { groth16, Groth16Proof, PublicSignals } from "snarkjs";
+import { ProofOutput, useProofStore } from "@/store/useProofStore";
+import { groth16 } from "snarkjs";
 import { toast } from "sonner";
 
-export type ProofInput = {
+export type ProofInputParam = {
   root: string;
   nullifier: string;
-  nonce: string[];
+  secret: string[];
   loanAmount: string;
   pathElements: string[];
   pathIndices: string[];
 };
 
-export type OutPut = {
-  proof: Groth16Proof;
-  publicSignals: PublicSignals;
-};
+export const GenerateProof = async (
+  input: ProofInputParam
+): Promise<ProofOutput> => {
+  const wasmResponse = await fetch("/circom/withdraw.wasm");
+  const zkeyResponse = await fetch("/circom/withdraw.wasm");
 
-export const useGenerateProofMutation = () => {
-  const { setOutput } = useProofStore();
-  const proof = useMutation({
-    mutationFn: async (input: ProofInput): Promise<OutPut> => {
-      const [wasmResp, zkeyResp] = await Promise.all([
-        fetch("/circom/withdraw.wasm"),
-        fetch("/circom/withdraw.zkey"),
-      ]);
+  const wasmBuffer = await wasmResponse.arrayBuffer();
+  const zkeyBuffer = await zkeyResponse.arrayBuffer();
 
-      const [wasmBuf, zkeyBuf] = await Promise.all([
-        wasmResp.arrayBuffer(),
-        zkeyResp.arrayBuffer(),
-      ]);
+  console.log("input ", input);
+  const { proof, publicSignals } = await groth16.fullProve(
+    input,
+    new Uint8Array(wasmBuffer),
+    new Uint8Array(zkeyBuffer)
+  );
+  const valid = await verifyProof(proof, publicSignals);
+  console.log(valid);
 
-      const { proof, publicSignals } = await groth16.fullProve(
-        input,
-        new Uint8Array(wasmBuf),
-        new Uint8Array(zkeyBuf)
-      );
-
-      toast.success("Proof generated successfully");
-      return { proof, publicSignals };
-    },
+  toast.success("Proof generated successfully");
+  const callData = await exportSolidityCallData({
+    proof: proof,
+    publicSignals: publicSignals,
   });
+  console.log("calldata : ", callData);
+  toast.success(`Proof test verification: ${valid ? "Valid" : "Invalid"}`);
 
-  useEffect(() => {
-    if (!proof.data) return;
-
-    (async () => {
-      try {
-        const callData = await exportSolidityCallData({
-          proof: proof.data.proof,
-          publicSignals: proof.data.publicSignals,
-        });
-        setOutput({
-          proof: proof.data?.proof,
-          publicSignals: proof.data?.publicSignals,
-          calldata: callData,
-        });
-      } catch (error) {
-        toast.error("Failed to export Solidity calldata");
-      }
-    })();
-  }, [proof.data]);
-  return proof;
+  toast.success("format Proof to Solidity calldata");
+  return { calldata: callData };
 };
+
+//   useEffect(() => {
+//     if (!proof.data) return;
+
+//     (async () => {
+//       try {
+//         const callData = await exportSolidityCallData({
+//           proof: proof.data.proof,
+//           publicSignals: proof.data.publicSignals,
+//         });
+//         setOutput({
+//           proof: proof.data?.proof,
+//           publicSignals: proof.data?.publicSignals,
+//           calldata: callData,
+//         });
+//       } catch (error) {
+//         toast.error("Failed to export Solidity calldata");
+//       }
+//     })();
+//   }, [proof.data]);
+//   return proof;
+// };
 
 // export const gettingProofLeafs = async (nonce: string[], nullifier: string) => {
 //   const events = await publicClient.readContract({

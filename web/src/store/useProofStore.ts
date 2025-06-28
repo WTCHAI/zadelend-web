@@ -5,16 +5,13 @@ import { Groth16Proof, PublicSignals } from "snarkjs";
 export type ProofInput = {
   root: string;
   nullifier: string;
-  nonce: string[];
+  nonce: string;
   loanAmount: string;
   pathElements: string[];
   pathIndices: string[]
-  pathRoot: string 
 };
 
 export type ProofOutput = {
-  proof: Groth16Proof;
-  publicSignals: PublicSignals;
   calldata?: [string[], string[][], string[], string[]];
 };
 

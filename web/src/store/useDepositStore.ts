@@ -3,12 +3,10 @@ import { create } from "zustand";
 interface DepositStore {
   tokenId: string;
   nftValues: string;
-
   nonce: string;
   nullifier: string;
 
   setTokenId: (address: string) => void;
-
   setNonce: (nonce: string) => void;
   setNullifier: (nullifier: string) => void;
 
