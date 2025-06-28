@@ -23,7 +23,11 @@ export function GlobalProviders({
   initialState?: State;
 }) {
   return (
-    <WagmiProvider config={walletConfig} initialState={initialState}>
+    <WagmiProvider
+      config={walletConfig}
+      initialState={initialState}
+      reconnectOnMount={true}
+    >
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({

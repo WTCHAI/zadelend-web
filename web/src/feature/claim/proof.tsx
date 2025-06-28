@@ -11,20 +11,15 @@ import {
   AssetNFTCard,
   NetworkCard,
 } from "@/components/common/Cards/cards";
-import { GenerateProof, ProofInputParam } from "@/hooks/useGenProof";
-import { ProofInput, ProofOutput, useProofStore } from "@/store/useProofStore";
+import { GenerateProof } from "@/hooks/useGenProof";
+import { ProofInput, useProofStore } from "@/store/useProofStore";
 import { toast } from "sonner";
 import { getLeafs } from "./getLeafs";
 import { useAccount } from "wagmi";
-import { poseidon2, poseidon3 } from "poseidon-lite";
-import {
-  exportSolidityCallData,
-  generateProof,
-  verifyProof,
-} from "@/lib/circuit";
-import MerkleTree from "fixed-merkle-tree";
+
 import { isValidElement, useEffect, useState } from "react";
 import { ClaimProof } from "./claimToken";
+import { scrollSepolia } from "viem/chains";
 
 type ProofContentInfoProp = {
   value: string;
@@ -50,7 +45,7 @@ export const ProofContentInfo = ({
   setActiveTab,
 }: ProofContentInfoProp) => {
   const { input, setInput, output, setOutput, reset } = useProofStore();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const [validCallData, setVaidCalled] = useState(output !== null);
   const quoted =
     Array.isArray(input?.pathElements) &&
@@ -59,6 +54,7 @@ export const ProofContentInfo = ({
     input.pathIndices.length > 0 &&
     input?.root !== "";
 
+  
   return (
     <TabsContent
       value={value}
@@ -97,9 +93,9 @@ export const ProofContentInfo = ({
                 toast.error("Please provide nullifier and nonce first.");
                 return;
               }
-              console.log("Fetching leafs for nullifier:", input.nullifier);
-              console.log("Nonce:", input.nonce);
-              console.log("Loan Amount:", input.loanAmount);
+              // console.log("Fetching leafs for nullifier:", input.nullifier);
+              // console.log("Nonce:", input.nonce);
+              // console.log("Loan Amount:", input.loanAmount);
               // Fetching leafs
               try {
                 const { commitment, pathElements, pathIndices, root } =
@@ -117,11 +113,11 @@ export const ProofContentInfo = ({
                   root: root,
                 } as ProofInput);
               } catch (error) {
-                toast.warning("invalid nullifier or nonce");
+                toast.warning("CCIP Messaging your assets");
               }
               setVaidCalled(false);
               return;
-            } else if (!validCallData && quoted) {
+            } else if (!validCallData && quoted ) {
               // console.log("Generating Proof with input:", input);
               const inputArgs = {
                 root: input?.root.toString() ?? "",
@@ -145,9 +141,27 @@ export const ProofContentInfo = ({
               input.root &&
               address
             ) {
+              if (chainId !== scrollSepolia.id) { 
+                toast.error("Please switch to Scroll Sepolia network");
+                return 
+              }
               console.log(input, output);
-              await ClaimProof(output, input?.commitment, input?.root, address);
-              // reset()f
+              const txHashed = await ClaimProof(output, input?.commitment, input?.root, address);
+                
+              toast.success(
+                <div>
+                  Claiming your Asset Transaction :&nbsp;
+                  <a
+                    href={`https://sepolia.etherscan.io/tx/${txHashed}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-medium"
+                  >
+                    View on Etherscan
+                  </a>
+                </div>
+              );
+              reset()
             }
           }}
         >

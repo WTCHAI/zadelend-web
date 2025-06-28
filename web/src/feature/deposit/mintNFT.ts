@@ -1,8 +1,8 @@
 import { NFT_ABI } from "@/lib/abis";
+import { sepolia } from "@wagmi/core/chains";
 import { contractConfig, SepoliaContract } from "@/lib/contract";
 
 import {
-  getAccount,
   waitForTransactionReceipt,
   writeContract,
   readContract,
@@ -18,6 +18,7 @@ export const MintNFT = async (account: Address) => {
       functionName: "mint",
       args: [],
       account,
+      chainId: sepolia.id,
     });
 
     return {

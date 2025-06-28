@@ -60,7 +60,5 @@ export async function ClaimProof(
     hash: claimTx,
   });
 
-  toast.success(
-    "Transaction confirmed successfully!" + receipt.transactionHash.toString()
-  );
+  return receipt.transactionHash.toString()
 }

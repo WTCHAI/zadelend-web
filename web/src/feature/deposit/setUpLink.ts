@@ -28,7 +28,7 @@ export const SetupLink = async (account: Address) => {
       abi: linkAbi,
       address: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
       functionName: "transferAndCall",
-      args: [SepoliaContract.depositContract, parseEther("1"), "0x"],
+      args: [SepoliaContract.depositContract, parseEther("0.3"), "0x"],
       account,
     });
 

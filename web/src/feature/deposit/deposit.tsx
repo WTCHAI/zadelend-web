@@ -15,6 +15,9 @@ import { useAccount } from "wagmi";
 import { poseidon3 } from "poseidon-lite";
 import { toBytes32 } from "@/utils/byte32";
 import { ScrollContract, SepoliaContract } from "@/lib/contract";
+import { useEffect } from "react";
+import { sepolia } from "viem/chains";
+import { toast } from "sonner";
 
 type BridgeTabProps = {
   value: string;
@@ -36,8 +39,12 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
   buttonLabel,
 }: BridgeTabProps) => {
   const { tokenId, nonce, nullifier } = useDepositStore();
-  const { address } = useAccount();
+  const { address, chainId: currentChain } = useAccount();
 
+  useEffect(() => {
+    currentChain !== sepolia.id &&
+      toast.warning("Please switch to Sepolia network");
+  }, []);
   return (
     <TabsContent
       value={value}
@@ -86,7 +93,7 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
               console.log("Current commitment:", commitment);
               const byteCommitment = toBytes32(commitment);
 
-              await DepositNFT({
+              const { txhashed } = await DepositNFT({
                 account: address as Address,
                 tokenId: BigInt(tokenId),
                 amount: 100n,
@@ -94,6 +101,19 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
                 nftAddress: SepoliaContract.nft as Address,
                 receiverAddress: ScrollContract.Loaner as Address,
               });
+              toast.success(
+                <div>
+                  Transaction sent:&nbsp;
+                  <a
+                    href={`https://sepolia.etherscan.io/tx/${txhashed}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-medium"
+                  >
+                    View on Etherscan
+                  </a>
+                </div>
+              );
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }

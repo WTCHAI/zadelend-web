@@ -29,20 +29,6 @@ export default function ClaimWithProofTabs() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            {/* Tab Headers */}
-            <TabsList className="grid grid-cols-2 mb-8 bg-transparent p-0 gap-4">
-              <TabsTrigger
-                value="proof"
-                className={`py-4 px-6 rounded-2xl font-semibold text-lg transition-all backdrop-blur-3xl hover:bg-white/30 duration-300 hover:ring1 hover:ring-bg-white/50 hover:shadow-md ${
-                  activeTab === "mint-deposit"
-                    ? "bg-white/60 text-grayy-800 shadow-lg"
-                    : "text-gray-500 hover:text-grayy-700 bg-transparent"
-                }`}
-              >
-                Proof
-              </TabsTrigger>
-            </TabsList>
-
             <ProofContentInfo
               value="proof"
               from={{ name: "Eth Sepolia", icon: ETH_ICON }}

@@ -7,6 +7,7 @@ import {
 import { Address, Hex } from "viem";
 import { toast } from "sonner";
 import { NFT_ABI, NFT_DEPOSITOR_ABI } from "@/lib/abis";
+import { SetupLink } from "./setUpLink";
 
 /**
  * Approves USDC and deposits an NFT.
@@ -28,9 +29,11 @@ export const DepositNFT = async ({
   commitment: Hex;
 }) => {
   try {
+    toast.info("Placeing fees by link token");
+    await SetupLink(account as Address);
+
     // 1️⃣ Approve NFT
     toast.info("Approving nft...");
-
     const approveTx = await writeContract(contractConfig, {
       address: SepoliaContract.nft,
       abi: NFT_ABI,
@@ -43,9 +46,7 @@ export const DepositNFT = async ({
     toast.success("token approved!");
 
     // 2️⃣ Deposit NFT
-    toast.info(
-      "Depositing NFT..." + tokenId + ScrollContract.Loaner + commitment
-    );
+    toast.info("Depositing NFT..." + tokenId);
     const depositTx = await writeContract(contractConfig, {
       address: SepoliaContract.depositContract,
       abi: NFT_DEPOSITOR_ABI,
@@ -59,10 +60,8 @@ export const DepositNFT = async ({
       hash: depositTx,
     });
 
-    toast.success(
-      "Transaction confirmed successfully!" + receipt.transactionHash.toString()
-    );
     return {
+      txhashed: receipt.transactionHash.toString(),
       approveTx,
       depositTx,
       success: true,

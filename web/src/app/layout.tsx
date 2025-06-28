@@ -7,7 +7,6 @@ import { headers } from "next/headers";
 import { walletConfig } from "../config/wallet";
 import { GlobalProviders } from "../providers/GlobalProvider";
 import { Navbar } from "@/components/common/Navbar/Navbar";
-import { Footer } from "@/components/common/Footer/footer";
 import { Toaster } from "sonner";
 
 const interSans = Inter({
@@ -21,8 +20,8 @@ const interMono = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Pomwha",
-  description: "Bridge your assets with zk technology",
+  title: "ZADELEND",
+  description: "Cross-Chain Asset Collateralized Loan with ZK Proofs and Chainlink",
 };
 
 export default async function RootLayout({

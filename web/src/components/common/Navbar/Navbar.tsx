@@ -65,7 +65,7 @@ export function Navbar() {
         {/* Wallet */}
         <div className="">
           <ConnectButton
-            chainStatus="none"
+            chainStatus="icon"
             showBalance={false}
             accountStatus={"full"}
             label="Connect"
