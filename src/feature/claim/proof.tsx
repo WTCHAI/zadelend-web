@@ -79,9 +79,9 @@ export const ProofContentInfo = ({
                 toast.error("Please provide nullifier and nonce first.");
                 return;
               }
-              // console.log("Fetching leafs for nullifier:", input.nullifier);
-              // console.log("Nonce:", input.nonce);
-              // console.log("Loan Amount:", input.loanAmount);
+              console.log("Fetching leafs for nullifier:", input.nullifier);
+              console.log("Nonce:", input.nonce);
+              console.log("Loan Amount:", input.loanAmount);
               // Fetching leafs
               try {
                 const { commitment, pathElements, pathIndices, root } =

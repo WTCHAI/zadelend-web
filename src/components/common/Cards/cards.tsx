@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { SepoliaContract } from "@/lib/contract";
 import { useDepositStore } from "@/store/useDepositStore";
 import { ProofInput, useProofStore } from "@/store/useProofStore";
-import { useEffect } from "react";
 
 export const NetworkCard = ({
   name,
@@ -155,17 +154,7 @@ export const AssetNFTCard = ({
   overlayIcon: string;
   networkIcon: string;
 }) => {
-  const { nonce, nullifier } = useDepositStore();
   const { input, setInput } = useProofStore();
-  useEffect(() => {
-    setInput({
-      ...input,
-      nonce: nonce,
-      nullifier: nullifier || "",
-      loanAmount: "100",
-    } as ProofInput);
-  }, [nonce, nullifier, input, setInput]);
-
   return (
     <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-6 space-y-6">
       {/* Header Section */}

@@ -1,18 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import {
-  Hash,
-  Clock,
+  ArrowRight,
   CheckCircle,
-  XCircle,
+  Clock,
+  ExternalLink,
+  Hash,
   Loader,
   User,
-  ArrowRight,
-  ExternalLink,
+  XCircle,
 } from "lucide-react";
-import { getDepositLog } from "@/feature/explorer/getDepositLog.ts";
-import { useAccount } from "wagmi";
-import { Address } from "viem";
+import { useEffect, useState } from "react";
 
 type Transaction = {
   hash: string;
@@ -211,11 +208,11 @@ const LoadingState = () => (
 export default function Page() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const { address } = useAccount();
+  // useAccount();
   useEffect(() => {
-    (async () => {
-      await getDepositLog(address as Address);
-    })();
+    // (async () => {
+    //   await getDepositLog(address as Address);
+    // })();
 
     setTimeout(() => {
       setTransactions([

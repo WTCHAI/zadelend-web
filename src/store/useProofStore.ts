@@ -12,7 +12,6 @@ export type ProofInput = {
 
 export type ProofOutput = [string[], string[][], string[], string[]];
 
-
 type ProofState = {
   input: ProofInput | null;
   output: ProofOutput | null;
@@ -22,7 +21,15 @@ type ProofState = {
 };
 
 export const useProofStore = create<ProofState>()((set) => ({
-  input: null,
+  input: {
+    commitment: "",
+    root: "",
+    nullifier: "",
+    nonce: "",
+    loanAmount: "100",
+    pathElements: [],
+    pathIndices: [],
+  },
   output: null,
   setInput: (input) => set({ input }),
   setOutput: (output) => set({ output }),
