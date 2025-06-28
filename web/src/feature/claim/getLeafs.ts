@@ -13,7 +13,7 @@ export async function getLeafs(
   loanAmount: string
 ) {
   const i_commitment = poseidon3([nullifier, nonce, loanAmount]);
-  console.log("Current commitment:", toBytes32(i_commitment));
+  // console.log("Current commitment:", toBytes32(i_commitment));
 
   toast.info("quoting proof setup");
   const currentBlock = await publicClient.getBlockNumber();
@@ -48,9 +48,9 @@ export async function getLeafs(
   });
 
   // console.log("Fetched leaf logs :", Bigleaf);
-  console.log("Leaves:", leaves);
-  console.log("Commitment:", i_commitment);
-  console.log("Index of commitment:", leaves.indexOf(i_commitment));
+  // console.log("Leaves:", leaves);
+  // console.log("Commitment:", i_commitment);
+  // console.log("Index of commitment:", leaves.indexOf(i_commitment));
   const { pathElements, pathIndices, pathRoot } = tree.proof(i_commitment);
 
   toast.success(
@@ -58,6 +58,7 @@ export async function getLeafs(
   );
 
   return {
+    commitment: i_commitment,
     pathElements: pathElements.map((el) => el.toString()),
     pathIndices: pathIndices.map((el) => el.toString()),
     root: pathRoot.toString(),

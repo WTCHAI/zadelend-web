@@ -12,11 +12,19 @@ import {
   NetworkCard,
 } from "@/components/common/Cards/cards";
 import { GenerateProof, ProofInputParam } from "@/hooks/useGenProof";
-import { ProofInput, useProofStore } from "@/store/useProofStore";
+import { ProofInput, ProofOutput, useProofStore } from "@/store/useProofStore";
 import { toast } from "sonner";
 import { getLeafs } from "./getLeafs";
 import { useAccount } from "wagmi";
-import { poseidon3 } from "poseidon-lite";
+import { poseidon2, poseidon3 } from "poseidon-lite";
+import {
+  exportSolidityCallData,
+  generateProof,
+  verifyProof,
+} from "@/lib/circuit";
+import MerkleTree from "fixed-merkle-tree";
+import { isValidElement, useEffect, useState } from "react";
+import { ClaimProof } from "./claimToken";
 
 type ProofContentInfoProp = {
   value: string;
@@ -27,6 +35,7 @@ type ProofContentInfoProp = {
   networkIcon: string;
   isConnected: boolean;
   buttonLabel: string;
+  setActiveTab: (tab: string) => void;
 };
 
 export const ProofContentInfo = ({
@@ -38,15 +47,18 @@ export const ProofContentInfo = ({
   networkIcon,
   isConnected,
   buttonLabel,
+  setActiveTab,
 }: ProofContentInfoProp) => {
-  const { input, setInput } = useProofStore();
+  const { input, setInput, output, setOutput, reset } = useProofStore();
   const { address } = useAccount();
+  const [validCallData, setVaidCalled] = useState(output !== null);
   const quoted =
     Array.isArray(input?.pathElements) &&
     input.pathElements.length > 0 &&
     Array.isArray(input?.pathIndices) &&
     input.pathIndices.length > 0 &&
     input?.root !== "";
+
   return (
     <TabsContent
       value={value}
@@ -89,55 +101,68 @@ export const ProofContentInfo = ({
               console.log("Nonce:", input.nonce);
               console.log("Loan Amount:", input.loanAmount);
               // Fetching leafs
-              const { pathElements, pathIndices, root } = await getLeafs(
-                input.nullifier,
-                input.nonce,
-                input.loanAmount
-              );
-              // update proof input params state
-              setInput({
-                ...input,
-                pathElements: pathElements,
-                pathIndices: pathIndices,
-                root: root,
-              } as ProofInput);
+              try {
+                const { commitment, pathElements, pathIndices, root } =
+                  await getLeafs(
+                    input.nullifier,
+                    input.nonce,
+                    input.loanAmount
+                  );
+                // update proof input params state
+                setInput({
+                  ...input,
+                  commitment: commitment.toString(),
+                  pathElements: pathElements,
+                  pathIndices: pathIndices,
+                  root: root,
+                } as ProofInput);
+              } catch (error) {
+                toast.warning("invalid nullifier or nonce");
+              }
+              setVaidCalled(false);
               return;
+            } else if (!validCallData && quoted) {
+              // console.log("Generating Proof with input:", input);
+              const inputArgs = {
+                root: input?.root.toString() ?? "",
+                nullifier: input?.commitment.toString() ?? "",
+                secret: [input?.nullifier ?? "", input?.nonce.toString() ?? ""],
+                loanAmount: "100", //fixed size amount
+                pathElements:
+                  input?.pathElements.map((el) => el.toString()) ?? [],
+                pathIndices:
+                  input?.pathIndices.map((el) => el.toString()) ?? [],
+              };
+              const { calldata } = await GenerateProof(inputArgs);
+
+              // console.log("Proof generated:", a, b, c, publicOutput);
+              setOutput(calldata);
+              setVaidCalled(calldata !== null);
+            } else if (
+              output &&
+              input &&
+              input.commitment &&
+              input.root &&
+              address
+            ) {
+              console.log(input, output);
+              await ClaimProof(output, input?.commitment, input?.root, address);
+              // reset()f
             }
-            // console.log("Generating Proof with input:", input);
-            // const inputArgs: ProofInputParam = {
-            //   root: input?.root ?? "",
-            //   nullifier: input?.nullifier.toString() ?? "",
-            //   secret: [input?.nullifier ?? "", input?.nonce.toString() ?? ""],
-            //   loanAmount: "100", //fixed size amount
-            //   pathElements:
-            //     input?.pathElements.map((el) => el.toString()) ?? [],
-            //   pathIndices: input?.pathIndices.map((el) => el.toString()) ?? [],
-            // };
-            const i_commitment = poseidon3([12, 11, 100]);
-            console.log("Current commitment:", i_commitment.toString());
-            const inputArgs: ProofInputParam = {
-              root: "3568792632707908471653242077392028502802971188580429106389237628370425210300",
-              nullifier: "12",
-              secret: ["12", "11"],
-              loanAmount: "100",
-              pathElements: [
-                "19014214495641488759237505126948346942972912379615652741039992445865937985820",
-                "6735486976153207481917817300106879816087474366714266275682876014984271171285",
-              ],
-              pathIndices: ["0", "1"],
-            };
-            console.log(inputArgs, "inputArgs for proof generation");
-            await GenerateProof(inputArgs);
           }}
         >
           {input?.nonce[0] === "" ||
           input?.nullifier === "" ||
           input?.loanAmount === "" ? (
             <div>Generating Proof</div>
-          ) : quoted ? (
-            <div>Generating Proof</div>
-          ) : (
+          ) : !quoted ? (
             <div>Quoting proof setup</div>
+          ) : quoted && !validCallData ? (
+            <div>Generating Proof</div>
+          ) : validCallData ? (
+            <div>Claim yout liquidity</div>
+          ) : (
+            <div>Generate Proof</div>
           )}
         </Button>
       </div>

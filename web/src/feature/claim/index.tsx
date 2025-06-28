@@ -41,16 +41,6 @@ export default function ClaimWithProofTabs() {
               >
                 Proof
               </TabsTrigger>
-              <TabsTrigger
-                value="claim"
-                className={`py-4 px-6 rounded-2xl font-semibold text-lg transition-all backdrop-blur-3xl hover:bg-white/30 duration-300 hover:ring1 hover:ring-bg-white/50 hover:shadow-md ${
-                  activeTab === "deposit"
-                    ? "bg-white/60  text-grayy-800 shadow-lg"
-                    : "text-gray-500 hover:text-grayy-700 transparent"
-                }`}
-              >
-                Claim
-              </TabsTrigger>
             </TabsList>
 
             <ProofContentInfo
@@ -62,16 +52,7 @@ export default function ClaimWithProofTabs() {
               networkIcon={ETH_ICON}
               isConnected={isConnected}
               buttonLabel="Deposit"
-            />
-            <ClaimContentInfo
-              value="claim"
-              from={{ name: "Eth Sepolia", icon: ETH_ICON }}
-              to={{ name: "Scroll Sepolia", icon: SCROLL_ICON }}
-              tokenIcon={USDT_ICON}
-              networkIcon={ETH_ICON}
-              overlayIcon={ETH_ICON}
-              isConnected={isConnected}
-              buttonLabel="Deposit"
+              setActiveTab={setActiveTab}
             />
           </Tabs>
 

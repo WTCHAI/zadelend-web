@@ -86,14 +86,14 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
               console.log("Current commitment:", commitment);
               const byteCommitment = toBytes32(commitment);
 
-              // await DepositNFT({
-              //   account: address as Address,
-              //   tokenId: BigInt(tokenId),
-              //   amount: 100n,
-              //   commitment: byteCommitment as Hex,
-              //   nftAddress: SepoliaContract.nft as Address,
-              //   receiverAddress: ScrollContract.Loaner as Address,
-              // });
+              await DepositNFT({
+                account: address as Address,
+                tokenId: BigInt(tokenId),
+                amount: 100n,
+                commitment: byteCommitment as Hex,
+                nftAddress: SepoliaContract.nft as Address,
+                receiverAddress: ScrollContract.Loaner as Address,
+              });
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }

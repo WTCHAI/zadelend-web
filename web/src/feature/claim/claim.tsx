@@ -7,6 +7,7 @@ import { useDepositStore } from "@/store/useDepositStore";
 import { AssetNFTCard, NetworkCard } from "@/components/common/Cards/cards";
 import { useProofStore } from "@/store/useProofStore";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 type ClaimContentInfoProps = {
   value: string;
@@ -29,8 +30,11 @@ export const ClaimContentInfo = ({
   isConnected,
   buttonLabel,
 }: ClaimContentInfoProps) => {
-  const { output } = useProofStore();
+  const { input ,output } = useProofStore();
+  console.log("ClaimContentInfo output:", output);
+  console.log(input);
   return (
+
     // const isProofReady =
     //   output?.proof?.pi_a &&
     //   output?.proof?.pi_b &&

@@ -27,7 +27,8 @@ export const contractConfig = createConfig({
   },
 });
 
-export const { connector, address: AccountAddress }  = getAccount(contractConfig)
+export const { connector, address: AccountAddress } =
+  getAccount(contractConfig);
 
 // Contract configurations for writeContracts
 export const ContractConfigs = {
@@ -68,7 +69,6 @@ export const ContractConfigs = {
   }),
 };
 
-
 import { getPublicClient } from "wagmi/actions";
 
-export const publicClient = getPublicClient(contractConfig)
+export const publicClient = getPublicClient(contractConfig);
