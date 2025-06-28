@@ -8,7 +8,7 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  colorScheme: "red" | "green" | "blue" | "yellow";
+  colorScheme: "red" | "green" | "blue" | "yellow" | "purple";
 }
 
 // Color scheme configurations
@@ -49,6 +49,8 @@ const colorSchemes = {
     bg: "bg-purple-100",
     iconBg: "bg-purple-100",
     iconText: "text-purple-600",
+    ring: "hover:ring-purple-400",
+    titleText: "text-purple-700",
   },
   teal: {
     bg: "bg-teal-100",
@@ -96,7 +98,7 @@ export default function Home() {
       title: "Multi-Asset Support",
       description:
         "Tokens, NFTs, and RWAs — unified into cross-chain liquidity",
-      colorScheme: "red" as const,
+      colorScheme: "purple" as const,
     },
     {
       icon: <Shield className="size-6" />,
@@ -139,8 +141,9 @@ export default function Home() {
               <span>Cross-Chain</span>
               <span className="block text-link-primary/90">Liquidity</span>
             </h1>
-            <p className="mt-6 text-xl font-medium text-gray-600 max-w-3xl mx-auto mb-8">
-              Cross-Chain Asset Collateralized Loan with ZK Proofs and Chainlink
+            <p className="mt-6 text-xl font-medium text-gray-500 max-w-3xl mx-auto mb-8">
+              Cross-Chain Asset Collateralized enabling untracable, proof-based
+              assets liquid across chains with complete user custody.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
@@ -160,11 +163,11 @@ export default function Home() {
         </div>
       </div>
       {/* Features Section */}
-      <div className="flex flex-col gap-5 font-bold text-4xl lg:text-7xl items-center justify-center text-center bg-link-lightblue/10 md py-[20vh] px-10 lg:px-40">
-        <h2 className="text-slate-700 px-5 block">
-          Transform the value of your assets seamlessly across chains
+      <div className="flex flex-col gap-5 font-bold text-4xl lg:text-7xl items-center justify-center text-center bg-link-lightblue/10 md py-[20vh] w-full px-10 lg:px-40">
+        <h2 className="text-3xl text-slate-700 px-5 block">
+          Breaking the boundaries of traditional DeFi with
         </h2>
-        <h2 className="text-link-primary/90 my-10">OWN-PROVE-MOVE</h2>
+        <h2 className="text-link-primary/90 mb-10">Zero Knowledge Proofs</h2>
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center justify-center lg:max-w-4xl">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />

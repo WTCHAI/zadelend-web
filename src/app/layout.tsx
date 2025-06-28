@@ -20,8 +20,8 @@ const interMono = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ZADELEND",
-  description: "Cross-Chain Asset Collateralized Loan with ZK Proofs and Chainlink",
+  title: "zadelend",
+  description: " Cross-Chain Asset Collateralized enabling untracable, proof-based assets liquid across chains with complete user custody.",
 };
 
 export default async function RootLayout({
