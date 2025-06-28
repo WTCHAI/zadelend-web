@@ -2,7 +2,6 @@ import { NFT_DEPOSITOR_ABI } from "@/lib/abis";
 import { publicClient, SepoliaContract } from "@/lib/contract";
 
 import { toast } from "sonner";
-import { Address } from "viem";
 
 export interface DepositLog {
   nftAddress: string;
@@ -11,7 +10,7 @@ export interface DepositLog {
   messageId: string;
 }
 
-export async function getDepositLog(account: Address) {
+export async function getDepositLog() {
   toast.info("Quoting event logs...");
   const currentBlock = await publicClient.getBlockNumber();
   const logs = await publicClient.getContractEvents({
@@ -23,11 +22,11 @@ export async function getDepositLog(account: Address) {
   });
 
   console.log(logs);
-  const depositLogs: DepositLog[] = logs.map((log) => ({
-    nftAddress: log.args.nftAddress,
-    owner: log.args.owner,
-    tokenId: log.args.tokenId,
-    messageId: log.args?.messageId ?? "0x",
-  }));
-  return depositLogs
+  //   const depositLogs: DepositLog[] = logs.map((log) => ({
+  //     nftAddress: log.args.nftAddress,
+  //     owner: log.args.owner,
+  //     tokenId: log.args.tokenId,
+  //     messageId: log.args?.messageId ?? "0x",
+  //   }));
+  //   return depositLogs
 }
