@@ -47,6 +47,7 @@ const colorSchemes = {
   },
   purple: {
     bg: "bg-purple-100",
+    hover: "hover:bg-purple-100/80",
     iconBg: "bg-purple-100",
     iconText: "text-purple-600",
     ring: "hover:ring-purple-400",
