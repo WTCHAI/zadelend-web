@@ -1,6 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { Groth16Proof, PublicSignals } from "snarkjs";
 
 export type ProofInput = {
   commitment: string;

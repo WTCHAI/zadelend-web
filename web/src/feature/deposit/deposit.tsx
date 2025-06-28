@@ -2,13 +2,13 @@ import { TabsContent } from "@/components/ui/tabs";
 
 import { Label } from "@/components/ui/label";
 
-import { ArrowRight, Wallet } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDepositStore } from "@/store/useDepositStore";
 import { AssetCard, NetworkCard } from "@/components/common/Cards/cards";
 import { DepositNFT } from "./depositNFT";
-import { Account, Address, Hex } from "viem";
+import { Address, Hex } from "viem";
 
 import { useAccount } from "wagmi";
 
@@ -36,15 +36,15 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
   tokenIcon,
   networkIcon,
   isConnected,
-  buttonLabel,
 }: BridgeTabProps) => {
   const { tokenId, nonce, nullifier } = useDepositStore();
   const { address, chainId: currentChain } = useAccount();
 
   useEffect(() => {
-    currentChain !== sepolia.id &&
+    if (currentChain !== sepolia.id) {
       toast.warning("Please switch to Sepolia network");
-  }, []);
+    }
+  }, [currentChain]);
   return (
     <TabsContent
       value={value}
@@ -114,6 +114,20 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
                   </a>
                 </div>
               );
+              toast.success(
+                <div>
+                  Transaction sent:&nbsp;
+                  <a
+                    href={`https://sepolia.etherscan.io/tx/${txhashed}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-medium"
+                  >
+                    View on Etherscan
+                  </a>
+                </div>
+              );
+              
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }

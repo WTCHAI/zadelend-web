@@ -1,9 +1,4 @@
-import {
-  LOAN_WITHDRAWER_ABI,
-  NFT_ABI,
-  NFT_DEPOSITOR_ABI,
-  USDC_ABI,
-} from "./abis";
+import { LOAN_WITHDRAWER_ABI, NFT_ABI, NFT_DEPOSITOR_ABI } from "./abis";
 import { http, createConfig, getAccount } from "@wagmi/core";
 import { sepolia, scrollSepolia } from "@wagmi/core/chains";
 import { Address } from "viem";

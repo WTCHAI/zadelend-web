@@ -1,13 +1,8 @@
 import { LOAN_WITHDRAWER_ABI } from "@/lib/abis";
 import { contractConfig, ScrollContract } from "@/lib/contract";
 import { ProofOutput } from "@/store/useProofStore";
-import { bytes32ToBigInt, toBytes32 } from "@/utils/byte32";
-import {
-  waitForCallsStatus,
-  waitForTransactionReceipt,
-  writeContract,
-} from "@wagmi/core";
-import { toast } from "sonner";
+import { toBytes32 } from "@/utils/byte32";
+import { waitForTransactionReceipt, writeContract } from "@wagmi/core";
 import { Address } from "viem";
 import { scrollSepolia } from "@wagmi/core/chains";
 
@@ -60,5 +55,5 @@ export async function ClaimProof(
     hash: claimTx,
   });
 
-  return receipt.transactionHash.toString()
+  return receipt.transactionHash.toString();
 }

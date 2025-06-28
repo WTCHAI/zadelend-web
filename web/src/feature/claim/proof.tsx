@@ -1,23 +1,15 @@
 import { TabsContent } from "@/components/ui/tabs";
 
-import { Label } from "@/components/ui/label";
-
-import { ArrowRight, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useDepositStore } from "@/store/useDepositStore";
-import {
-  AssetCard,
-  AssetNFTCard,
-  NetworkCard,
-} from "@/components/common/Cards/cards";
+import { AssetNFTCard } from "@/components/common/Cards/cards";
 import { GenerateProof } from "@/hooks/useGenProof";
 import { ProofInput, useProofStore } from "@/store/useProofStore";
 import { toast } from "sonner";
 import { getLeafs } from "./getLeafs";
 import { useAccount } from "wagmi";
 
-import { isValidElement, useEffect, useState } from "react";
+import { useState } from "react";
 import { ClaimProof } from "./claimToken";
 import { scrollSepolia } from "viem/chains";
 
@@ -35,14 +27,9 @@ type ProofContentInfoProp = {
 
 export const ProofContentInfo = ({
   value,
-  from,
-  to,
   tokenIcon,
   overlayIcon,
   networkIcon,
-  isConnected,
-  buttonLabel,
-  setActiveTab,
 }: ProofContentInfoProp) => {
   const { input, setInput, output, setOutput, reset } = useProofStore();
   const { address, chainId } = useAccount();
@@ -54,7 +41,6 @@ export const ProofContentInfo = ({
     input.pathIndices.length > 0 &&
     input?.root !== "";
 
-  
   return (
     <TabsContent
       value={value}
@@ -113,11 +99,12 @@ export const ProofContentInfo = ({
                   root: root,
                 } as ProofInput);
               } catch (error) {
+                console.log("Error fetching leafs:", error);
                 toast.warning("CCIP Messaging your assets");
               }
               setVaidCalled(false);
               return;
-            } else if (!validCallData && quoted ) {
+            } else if (!validCallData && quoted) {
               // console.log("Generating Proof with input:", input);
               const inputArgs = {
                 root: input?.root.toString() ?? "",
@@ -141,13 +128,18 @@ export const ProofContentInfo = ({
               input.root &&
               address
             ) {
-              if (chainId !== scrollSepolia.id) { 
+              if (chainId !== scrollSepolia.id) {
                 toast.error("Please switch to Scroll Sepolia network");
-                return 
+                return;
               }
               console.log(input, output);
-              const txHashed = await ClaimProof(output, input?.commitment, input?.root, address);
-                
+              const txHashed = await ClaimProof(
+                output,
+                input?.commitment,
+                input?.root,
+                address
+              );
+
               toast.success(
                 <div>
                   Claiming your Asset Transaction :&nbsp;
@@ -161,7 +153,7 @@ export const ProofContentInfo = ({
                   </a>
                 </div>
               );
-              reset()
+              reset();
             }
           }}
         >

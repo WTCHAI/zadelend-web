@@ -1,4 +1,3 @@
-import { toBytes32 } from "./../../../../pomwa-contract/test/utils/bytesConverter";
 import { LOAN_WITHDRAWER_ABI } from "@/lib/abis";
 import { publicClient, ScrollContract } from "@/lib/contract";
 import { bytes32ToBigInt } from "@/utils/byte32";
@@ -36,7 +35,7 @@ export async function getLeafs(
   for (let i = 0; i < leafLength; i++) {
     leaves[i] = bytes32ToBigInt(leaf[i] ?? "0x");
   }
-  // @ts-ignore
+  // @ts-expect-error MerkleTree types are not compatible here
   const tree = new MerkleTree(2, leaves, {
     hashFunction: (a, b) => poseidon2([a, b]),
     zeroElement: 0n,
@@ -46,8 +45,12 @@ export async function getLeafs(
   // console.log("Leaves:", leaves);
   // console.log("Commitment:", i_commitment);
   // console.log("Index of commitment:", leaves.indexOf(i_commitment));
-  toast.success(leaves.indexOf(i_commitment) === -1 ? "We cannot find your commitment! Make sure inpur correct nonce & nullifier" : "Quoting completed successfully!");
-  // @ts-ignore
+  toast.success(
+    leaves.indexOf(i_commitment) === -1
+      ? "We cannot find your commitment! Make sure inpur correct nonce & nullifier"
+      : "Quoting completed successfully!"
+  );
+  // @ts-expect-error invalid commitment not founce in merkle tree
   const { pathElements, pathIndices, pathRoot } = tree.proof(i_commitment);
   return {
     commitment: i_commitment,

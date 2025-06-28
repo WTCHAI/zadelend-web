@@ -15,10 +15,7 @@ import { SetupLink } from "./setUpLink";
 
 export const DepositNFT = async ({
   account,
-  nftAddress,
-  receiverAddress,
   tokenId,
-  amount,
   commitment,
 }: {
   account: Address;

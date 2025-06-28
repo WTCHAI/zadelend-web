@@ -7,7 +7,7 @@ interface MintMockNFTState {
   getLatestTokenID: () => Promise<void>;
 }
 
-export const useMintMockNFT = create<MintMockNFTState>((set, get) => ({
+export const useMintMockNFT = create<MintMockNFTState>((set) => ({
   latestTokenId: 0,
   loading: false,
 

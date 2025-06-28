@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 import { groth16, Groth16Proof, PublicSignals } from "snarkjs";
 
 export type Input = {
@@ -26,7 +28,6 @@ export const generateProof = async (input: Input): Promise<OutPut> => {
     new Uint8Array(wasmBuffer),
     new Uint8Array(zkeyBuffer)
   );
-
   return {
     proof,
     publicSignals,
@@ -45,10 +46,8 @@ export const verifyProof = async (
 export const exportSolidityCallData = async ({
   proof,
   publicSignals,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- groth16 output is dynamic
 }: OutPut): Promise<any> => {
   const calldata = await groth16.exportSolidityCallData(proof, publicSignals);
-
   return JSON.parse(`[${calldata}]`);
 };
-
-

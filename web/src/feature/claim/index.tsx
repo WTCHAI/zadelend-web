@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
 
 import { useAccount } from "wagmi";
 
@@ -10,11 +10,8 @@ import {
   SCROLL_ICON,
   USDT_ICON,
 } from "@/components/common/Tokens/Icons";
-import { MintContentInfo } from "../deposit/mint";
-import { DepositContentInfo } from "../deposit/deposit";
 
 import { ProofContentInfo } from "./proof";
-import { ClaimContentInfo } from "./claim";
 
 export default function ClaimWithProofTabs() {
   const [activeTab, setActiveTab] = useState("proof");

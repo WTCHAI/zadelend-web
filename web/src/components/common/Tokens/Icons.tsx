@@ -1,3 +1,5 @@
+// import Image from "next/image";
+
 // Token and network icons (you can replace these with actual URLs)
 export const USDT_ICON = "https://tether.to/images/logoCircle.png";
 export const ETH_ICON =

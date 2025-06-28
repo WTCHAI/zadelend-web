@@ -27,13 +27,8 @@ type MintContentInfoProps = {
 };
 
 export const MintContentInfo = ({
-  value,
   from,
-  to,
-  tokenIcon,
-  networkIcon,
   isConnected,
-  buttonLabel,
 }: MintContentInfoProps) => {
   const { latestTokenId, getLatestTokenID } = useMintMockNFT();
   const { handleCopy: FactoryCopy } = useCopyToClipboard(SepoliaContract.nft);

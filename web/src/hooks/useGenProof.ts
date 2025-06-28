@@ -1,14 +1,12 @@
-import { LOAN_WITHDRAWER_ABI } from "@/lib/abis";
-import {
-  exportSolidityCallData,
-  generateProof,
-  verifyProof,
-} from "@/lib/circuit";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+import { exportSolidityCallData, generateProof } from "@/lib/circuit";
 
 import { ProofOutput } from "@/store/useProofStore";
 import { toast } from "sonner";
 
 export const GenerateProof = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generateProof input type is flexible
   input: any
 ): Promise<{ calldata: ProofOutput }> => {
   const { proof, publicSignals } = await generateProof(input);

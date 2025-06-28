@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SepoliaContract } from "@/lib/contract";
 import { useDepositStore } from "@/store/useDepositStore";
-import { useMintMockNFT } from "@/store/useMintMockStore";
 import { ProofInput, useProofStore } from "@/store/useProofStore";
 import { useEffect } from "react";
 
@@ -76,8 +75,6 @@ export const AssetCard = ({
   title,
   token,
   tokenIcon,
-  networkIcon,
-  placeholder = "Place your assets address here",
 }: {
   title: string;
   token: string;
@@ -87,7 +84,6 @@ export const AssetCard = ({
 }) => {
   const { tokenId, nonce, nullifier, setTokenId, setNonce, setNullifier } =
     useDepositStore();
-  const { latestTokenId } = useMintMockNFT();
   return (
     <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-6 space-y-6">
       <div>
@@ -151,10 +147,6 @@ export const AssetCard = ({
 };
 
 export const AssetNFTCard = ({
-  title,
-  token,
-  tokenIcon,
-  overlayIcon,
   networkIcon,
 }: {
   title: string;
@@ -172,7 +164,8 @@ export const AssetNFTCard = ({
       nullifier: nullifier || "",
       loanAmount: "100",
     } as ProofInput);
-  }, []);
+  }, [nonce, nullifier, input, setInput]);
+
   return (
     <div className="bg-white/60 ring-1 hover:ring-2 ring-white/40 shadow-md backdrop-blur-3xl rounded-3xl p-6 space-y-6">
       {/* Header Section */}
