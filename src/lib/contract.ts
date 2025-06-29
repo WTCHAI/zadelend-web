@@ -6,11 +6,11 @@ import { Address } from "viem";
 export const SepoliaContract = {
   nft: "0x4B9D25236B30F01edF4D539ae8BDB04CcE029c75" as Address,
   usdc: "0xB58f04f651CDd8be01D3eA3266266Ce640C48C61" as Address,
-  depositContract: "0x067A84705698F63AF3342417F085DEd0287f9740" as Address,
+  depositContract: "0x12B92D38c380F66f64fA2909E967B386b22CB07A" as Address,
 };
 
 export const ScrollContract = {
-  Loaner: "0xd3433BfB79dD273d0bF342696165A259C6284b73" as Address,
+  Loaner: "0xf3BbAE47ef0e4A5C2AD77C9e49C9C2d65a0E0554" as Address,
   usdc: "0x3832f87b02724D953e08906CaF3C73d84Ef08570" as Address,
 };
 
