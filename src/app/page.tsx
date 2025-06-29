@@ -71,7 +71,7 @@ function FeatureCard({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center rounded-2xl ${colors.bg} ${colors.hover} p-6 shadow-lg ring-1 ring-gray-200/50 hover:ring-2 ${colors.ring} transition-all duration-300 md:min-h-[25vh]`}
+      className={`flex flex-col items-center justify-center rounded-2xl ${colors.bg} ${colors.hover} p-6 shadow-lg ring-1 ring-gray-200/50 hover:ring-1 hover:scale-[1.01] ${colors.ring} transition-all duration-300 md:min-h-[25vh]`}
     >
       <div
         className={`flex justify-center w-fit items-center gap-2 rounded-full ${colors.iconBg} px-3 py-1 text-xs font-semibold ${colors.iconText}`}
@@ -105,7 +105,7 @@ export default function Home() {
       icon: <Shield className="size-6" />,
       title: "Privacy-First",
       description:
-        "Zero-knowledge proofs keep your transfers untraceable and self-sovereign",
+        "Zero-knowledge proofs keep your transfers unlinkable and self-sovereign",
       colorScheme: "green" as const,
     },
     {
@@ -143,7 +143,7 @@ export default function Home() {
               <span className="block text-link-primary/90">Liquidity</span>
             </h1>
             <p className="mt-6 text-xl font-medium text-gray-500 max-w-3xl mx-auto mb-8">
-              Cross-Chain Asset Collateralized enabling untracable, proof-based
+              Cross-Chain Asset Collateralized enabling unlinkable, proof-based
               assets liquid across chains with complete user custody.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -165,7 +165,7 @@ export default function Home() {
       </div>
       {/* Features Section */}
       <div className="flex flex-col gap-5 font-bold text-4xl lg:text-7xl items-center justify-center text-center bg-link-lightblue/10 md py-[20vh] w-full px-10 lg:px-40">
-        <h2 className="text-3xl text-slate-700 px-5 block">
+        <h2 className="text-3xl text-slate-600 px-5 block">
           Breaking the boundaries of traditional DeFi with
         </h2>
         <h2 className="text-link-primary/90 mb-10">Zero Knowledge Proofs</h2>

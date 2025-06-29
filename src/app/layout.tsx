@@ -21,7 +21,7 @@ const interMono = Inter({
 
 export const metadata: Metadata = {
   title: "zadelend",
-  description: " Cross-Chain Asset Collateralized enabling untracable, proof-based assets liquid across chains with complete user custody.",
+  description: " Cross-Chain Asset Collateralized enabling unlinkable, proof-based assets liquid across chains with complete user custody.",
 };
 
 export default async function RootLayout({
