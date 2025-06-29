@@ -144,7 +144,7 @@ export const ProofContentInfo = ({
                 <div>
                   Claiming your Asset Transaction :&nbsp;
                   <a
-                    href={`https://sepolia.etherscan.io/tx/${txHashed}`}
+                    href={`https://sepolia.scrollscan.com/tx/${txHashed}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline font-medium"

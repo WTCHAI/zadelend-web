@@ -116,18 +116,17 @@ export const DepositContentInfo: React.FC<BridgeTabProps> = ({
               );
               toast.success(
                 <div>
-                  Transaction sent:&nbsp;
+                  Search with transaction hased:&nbsp;
                   <a
-                    href={`https://sepolia.etherscan.io/tx/${txhashed}`}
+                    href={`https://ccip.chain.link/?search=${txhashed}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline font-medium"
                   >
-                    View on Etherscan
+                    View on CCIP
                   </a>
                 </div>
               );
-              
             } else if (value === "withdraw") {
               console.log("execute withdraw logic here");
             }
